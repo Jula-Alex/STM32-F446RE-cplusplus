@@ -1,0 +1,14 @@
+# Ignore everything by default
+*
+
+# Keep Git configuration and CubeMX configuration
+!.gitignore
+!/*.ioc
+
+# Keep application headers and sources
+!/Core/
+/Core/*
+!/Core/Inc/
+!/Core/Inc/**
+!/Core/Src/
+!/Core/Src/**
