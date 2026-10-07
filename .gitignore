@@ -12,3 +12,6 @@
 !/Core/Inc/**
 !/Core/Src/
 !/Core/Src/**
+!/Docs/
+!/Docs/**
+!/README.md
