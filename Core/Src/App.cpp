@@ -7,8 +7,11 @@
 
 #include "App.h"
 #include "Led.h"
+#include "Button.h"
 
 Led onboardLed(GPIOA, GPIO_PIN_5);
+
+Button onboardButton(GPIOC, GPIO_PIN_13);
 
 void AppInit()
 {
@@ -17,6 +20,8 @@ void AppInit()
 
 void AppLoop()
 {
-	onboardLed.toggle();
-	HAL_Delay(500);
+	if (onboardButton.isPressed())
+	{
+		onboardLed.toggle();
+	}
 }
