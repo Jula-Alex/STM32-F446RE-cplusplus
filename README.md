@@ -79,3 +79,16 @@ Solution 2: Implement debounce logic that accepts an input only if the button st
 
 I chosed to implement the second solution.
 
+## Step 03 — LED Control Through the Onboard Button with Debounce
+
+- Date: 09-10-2026
+- Goal: The button changes the LED state only after remaining LOW (pressed) for at least 40 ms.
+
+### Implementation
+
+I implemented button debounce in a new method:
+- wasPressed() — Return true only if Button has a stable state >= 40ms and is LOW (pressed).
+
+### Verification
+
+![alt text](Docs/images/validMsDebounceOnlyOnLowSignal.png)

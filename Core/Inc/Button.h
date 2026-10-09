@@ -16,9 +16,15 @@ class Button
 		GPIO_TypeDef *const port;
 		uint16_t const pin;
 
+		uint32_t const debounce_ms;
+		uint32_t lastTime;
+		bool lastState;
+		bool stableState;
+
 	public:
-		Button(GPIO_TypeDef *port, uint16_t pin);
+		Button(GPIO_TypeDef *port, uint16_t pin, uint32_t debounce_ms);
 		bool isPressed() const;
+		bool wasPressed();
 };
 
 #endif /* INC_BUTTON_H_ */

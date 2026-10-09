@@ -11,7 +11,7 @@
 
 Led onboardLed(GPIOA, GPIO_PIN_5);
 
-Button onboardButton(GPIOC, GPIO_PIN_13);
+Button onboardButton(GPIOC, GPIO_PIN_13, 40);
 
 void AppInit()
 {
@@ -20,7 +20,7 @@ void AppInit()
 
 void AppLoop()
 {
-	if (onboardButton.isPressed())
+	if (onboardButton.wasPressed())
 	{
 		onboardLed.toggle();
 	}
