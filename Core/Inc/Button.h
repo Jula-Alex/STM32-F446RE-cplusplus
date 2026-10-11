@@ -27,9 +27,17 @@ class Button
 
 		// Read only function for read the button state
 		bool isPressed() const;
-		
+
 		// Activate debounce process
 		bool debounceActive;
+
+		// Static array of Button pointers for interrupt instances
+		// The Button class owns this array, and each object that uses interrupts will be registered in it
+		// The array has 16 elements because there are 16 EXTI lines
+		static Button *instances[16];
+
+		// Function that extracts the bit index of the set bit from the GPIO bitmask
+		static uint8_t pinToIndex(uint16_t gpioPin);
 
 	public:
 		Button(GPIO_TypeDef *port, uint16_t pin, uint32_t debounce_ms);
@@ -39,6 +47,9 @@ class Button
 
 		// Set the interrupt flag to trigger button processing
 		void handleInterrupt();
+
+		// Handle the interrupt and select the correct object to call
+		static void dispatchInterrupt(uint16_t gpioPin);
 };
 
 #endif /* INC_BUTTON_H_ */

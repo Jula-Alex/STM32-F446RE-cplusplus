@@ -138,3 +138,50 @@ I need to separate interrupt handling from debouncing. The interrupt will start 
 
 ![alt text](Docs/images/Step_04_Valid_Verification.png)
 
+## Step 05 — Static Data Members and Static Member Functions
+
+- Date: 11-10-2026
+- Goal: Support multiple button instances by routing each EXTI interrupt to the corresponding Button object.
+
+### Implementation
+
+I reviewed the code suggested by ChatGPT and then wrote it myself. I thought I understood it, but I was wrong.
+
+### Problems encountered
+
+After writing the code myself, I got stuck because I did not fully understand how it worked.
+
+![alt text](Docs/images/Step_05_Problem_01_Private_within_this_context.png)
+
+### What I learned
+
+I learned the difference between a free function and a member function.
+
+A free function does not belong to a class and does not have a this pointer. It cannot directly access a class’s private members unless it is declared as a friend. If it has internal linkage (static at namespace scope or placement in an anonymous namespace), its name is only accessible within that translation unit.
+
+A member function can be either static or non-static:
+
+- A static member function belongs to the class and does not have a this pointer. It can directly access private static members, but it needs an object to access private non-static members.
+- A non-static member function is called in the context of an object, has a this pointer, and can directly access both private non-static and private static members.
+
+The meaning of static depends on where it is used.
+
+### Verification
+
+I connected an external button to PC14, enabled interrupts on both rising and falling edges, and regenerated the code. Then I created another Button object and added it to the condition that toggles the LED.
+
+![alt text](Docs/images/Step_05_Verification_01.jpg)
+
+The LED did not respond to the external button. I could see the signal with the logic analyzer, but a breakpoint inside the callback was only reached when I pressed the onboard button. A breakpoint inside EXTI15_10_IRQHandler() was not reached when I pressed the external button either.
+
+After moving the external button from PC14 to PA7 and updating the configuration, it worked.
+
+With ChatGPT’s help, I investigated the board connections for PC14 and PC15. I checked SB48, SB49, R34, and R36 and found that to use PC14 and PC15 as GPIO through the board connectors, SB48 and SB49 must be closed, and R34 and R36 must be removed. My NUCLEO-F446RE does not have this configuration by default, and I do not have a soldering iron yet, so I continued using PA7.
+
+![alt text](Docs/images/Step_05_Problem_02_PC14.png)
+
+![alt text](Docs/images/Step_05_Verification_02.jpg)
+
+![alt text](Docs/images/Step_05_Verification_03.jpg)
+
+![alt text](Docs/images/Step_05_Verification_04.png)
